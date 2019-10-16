@@ -16,7 +16,9 @@
     - 下载器
     
 路线：
-
+    - 知识点
+    - 示例代码
+    - 最佳实践
 
 ######Python2和Python3的区别
 - print和input
@@ -29,7 +31,6 @@
     - 常用的urllib.urlopen()变成urllib.request.urlopen()
 - 字符串和编码
     - [结合循环语句打印各种*图形](https://www.runoob.com/w3cnote/prints-diamonds-triangles-rectangles.html)
-        
 
 ######编码问题
 - ASCII：美国信息交换标准代码,全称American Standard Code for Information Interchange

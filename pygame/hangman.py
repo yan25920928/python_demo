@@ -1,4 +1,5 @@
 import random
+# 常量
 HANGMAN_PICS = ['''
   +---+
       |
@@ -42,12 +43,13 @@ HANGMAN_PICS = ['''
  / \  |
     =====
   ''']
-words = 'ant baboon badger bat beaver camel crow deer dog fox goose monkey mouse panda shark sheep snake tiger'.split()
-
+# words = 'ant baboon badger bat beaver camel crow deer dog fox goose monkey mouse panda shark sheep snake tiger'.split()
+words = 'baboon deer goose sheep'.split()
+# 获取随机单词
 def getRandomWord(wordList):
     wordIndex = random.randint(0, len(wordList) - 1)
     return wordList[wordIndex]
-
+# 显示下划线
 def displayBoard(missedLetters, correctLetters, secretWord):
     print(HANGMAN_PICS[len(missedLetters)])
     print()
@@ -62,7 +64,7 @@ def displayBoard(missedLetters, correctLetters, secretWord):
     for letter in blanks:
         print(letter, end=" ")
     print()
-
+# 获取已经输入内容
 def getGuess(alreadyGuess):
     while True:
         print("Guess a letter.")
