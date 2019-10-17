@@ -1,3 +1,6 @@
+为什么是python：- Just for fun
+- 因为coding有意思呀    
+
 应用领域：
 - 数据分析——爬虫
     - [财经数据包TuShare](https://mp.weixin.qq.com/s?__biz=MjM5MDEyMDk4Mw==&mid=2650166012&idx=1&sn=ab577b80c7b3a261ce3b701a816bb639&scene=21#wechat_redirect) 
@@ -16,9 +19,17 @@
     - 下载器
     
 路线：
-    - 知识点
-    - 示例代码
-    - 最佳实践
+- Al Sweigart
+
+方法：
+- 期望达成目标(若干知识点)
+- 最佳实践(一个完整的功能程序)
+    - 直接敲完，看看能否正常运行，或者那些不懂的地方，新的知识点
+    - 带着疑问去学习后面的内容
+- 知识点
+    - 最佳实践拆解，知识点阐明
+    - 示例代码片段
+- 类比最佳实践    
 
 ######Python2和Python3的区别
 - print和input
