@@ -12,3 +12,20 @@
 第十二章  版本控制
 第十三章  开发方法
 第十四章  编程和游戏
+
+不足：
+打印菱形*——循环嵌套，if嵌套
+文件夹目录查找指定文件——文件夹操作，递归
+测试驱动：单元测试，logging，
+
+格式化输出
+解码方式：http://www.voidcn.com/article/p-pfivhtwg-to.html
+https://blog.csdn.net/kapuliyuehan/article/details/6773901
+抓取城市列表-天气4
+面向对象
+正则
+序列化：存取
+函数传参：默认参数，不定参数
+lambda表达式
+缺少：文件夹操作
+https://www.runoob.com/design-pattern/observer-pattern.html
