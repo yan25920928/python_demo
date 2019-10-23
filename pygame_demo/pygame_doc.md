@@ -1,4 +1,4 @@
-- Demo
+- Demo：2D-->3D-->VR，输入输出，接入手柄，声音
     - 打飞机
     - 井字棋
     - 贪吃蛇
@@ -48,9 +48,9 @@
         - 由RGB三原色构成，0-255，例如：(255,0,0)、(0,255,0)、(0,0,255)
         - 透明度alpha，第四个值，0为完全透明，255为完全不透明 例如：(255,0,0,255);
             - 使用convert_alpha()创建surface对象——`pygame.diplay.set_mode((300, 400)).convert_alpha()`
-        -     
+        - pygame.Color()来创建一个Color对象    
     - Rect对象
-        
-    - 绘制函数        
+        - 表示矩形(X,Y,Width,Height)
+    - 绘制图元        
         
                
