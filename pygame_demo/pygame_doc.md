@@ -1,4 +1,6 @@
 - Demo：2D-->3D-->VR，输入输出，接入手柄，声音
+    - 验证下，python是否真的不适合big game，对比C# Unity3D和python Panda3D
+    - 游戏发展史，复刻经典
     - 打飞机
     - 井字棋
     - 贪吃蛇
@@ -45,10 +47,10 @@
         当调用`pygame.display.update()`函数都会显示到窗口上
         - 窗口的边框，标题栏，和按钮并不是Surface对象的一部分
     - Color对象
-        - 由RGB三原色构成，0-255，例如：(255,0,0)、(0,255,0)、(0,0,255)
+        - 方式一：由RGB三原色构成，0-255，例如：(255,0,0)、(0,255,0)、(0,0,255)
         - 透明度alpha，第四个值，0为完全透明，255为完全不透明 例如：(255,0,0,255);
             - 使用convert_alpha()创建surface对象——`pygame.diplay.set_mode((300, 400)).convert_alpha()`
-        - pygame.Color()来创建一个Color对象    
+        - 方式二：pygame.Color()来创建一个Color对象    
     - Rect对象
         - 表示矩形(X,Y,Width,Height)
     - 绘制图元        
