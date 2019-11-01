@@ -43,7 +43,9 @@ BLUERECT   = pygame.Rect(XMARGIN + BUTTONSIZE + BUTTONGAPSIZE, YMARGIN, BUTTONSI
 REDRECT    = pygame.Rect(XMARGIN, YMARGIN + BUTTONSIZE + BUTTONGAPSIZE, BUTTONSIZE, BUTTONSIZE)
 GREENRECT  = pygame.Rect(XMARGIN + BUTTONSIZE + BUTTONGAPSIZE, YMARGIN + BUTTONSIZE + BUTTONGAPSIZE, BUTTONSIZE, BUTTONSIZE)
 
+# 主函数
 def main():
+    # 全局变量：被global修饰的全局变量和在方法外定义的全局变量的区别——global修饰的变量，可以在其他地方重新赋值使用
     global FPSCLOCK, DISPLAYSURF, BASICFONT, BEEP1, BEEP2, BEEP3, BEEP4
 
     pygame.init()
@@ -51,29 +53,31 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     pygame.display.set_caption('Simulate')
 
+    # 设置显示字体
     BASICFONT = pygame.font.Font('freesansbold.ttf', 16)
     infoSurf = BASICFONT.render('Match the pattern by clicking on the button or using the Q, W, A, S keys.', 1, DARKGRAY)
     infoRect = infoSurf.get_rect()
     infoRect.topleft = (10, WINDOWHEIGHT - 25)
 
-    # load the sound files
+    # 加载音频软件
     BEEP1 = pygame.mixer.Sound('beep1.ogg')
     BEEP2 = pygame.mixer.Sound('beep2.ogg')
     BEEP3 = pygame.mixer.Sound('beep3.ogg')
     BEEP4 = pygame.mixer.Sound('beep4.ogg')
 
-    # Initialize some variables for a new game
-    pattern = [] # stores the pattern of colors
-    currentStep = 0 # the color the player must push next
-    lastClickTime = 0 # timestamp of the player's last button push
+    # 定义game中需要使用的一些变量
+    pattern = [] # 颜色图案
+    currentStep = 0 # 下一轮颜色准备
+    lastClickTime = 0 # 最后按键的时间戳
     score = 0
     # when False, the pattern is playing. when True, waiting for the player to click a colored button:
     waitingForInput = False
 
+    # 主循环
     while True: # main game loop
         clickedButton = None # button that was clicked (set to YELLOW, RED, GREEN, or BLUE)
         DISPLAYSURF.fill(bgColor)
-        drawButtons()
+        drawButtons() # 绘制按钮
 
         scoreSurf = BASICFONT.render('Score: ' + str(score), 1, WHITE)
         scoreRect = scoreSurf.get_rect()
@@ -96,8 +100,6 @@ def main():
                     clickedButton = RED
                 elif event.key == K_s:
                     clickedButton = GREEN
-
-
 
         if not waitingForInput:
             # play the pattern

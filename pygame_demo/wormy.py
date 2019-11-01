@@ -6,6 +6,7 @@
 import random, pygame, sys
 from pygame.locals import *
 
+# 常量
 FPS = 15
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
@@ -31,18 +32,24 @@ RIGHT = 'right'
 
 HEAD = 0 # syntactic sugar: index of the worm's head
 
+# 主函数
 def main():
+    # 全局变量
     global FPSCLOCK, DISPLAYSURF, BASICFONT
 
+    # 初始化，外观设置
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
     pygame.display.set_caption('Wormy')
 
+    # 程序开始，初始化屏幕
     showStartScreen()
+
     while True:
-        runGame()
+        # runGame()
+        # 程序结束，显示图片
         showGameOverScreen()
 
 
@@ -126,10 +133,11 @@ def checkForKeyPress():
 
 
 def showStartScreen():
+    # 创建Font对象，设置显示内容
     titleFont = pygame.font.Font('freesansbold.ttf', 100)
     titleSurf1 = titleFont.render('Wormy!', True, WHITE, DARKGREEN)
     titleSurf2 = titleFont.render('Wormy!', True, GREEN)
-
+    # 角度
     degrees1 = 0
     degrees2 = 0
     while True:
@@ -144,8 +152,10 @@ def showStartScreen():
         rotatedRect2.center = (WINDOWWIDTH / 2, WINDOWHEIGHT / 2)
         DISPLAYSURF.blit(rotatedSurf2, rotatedRect2)
 
+        # 绘制文本信息
         drawPressKeyMsg()
 
+        # 检测按键
         if checkForKeyPress():
             pygame.event.get() # clear event queue
             return

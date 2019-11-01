@@ -6,7 +6,7 @@
     - 贪吃蛇
     - 八分音符
     - 俄罗斯方块
-    - 自走棋
+    - 战棋（自走棋）
     
 - 资料：
     - [中文文档](https://blog.csdn.net/qq_41556318/article/details/85880263)
@@ -51,8 +51,18 @@
         - 透明度alpha，第四个值，0为完全透明，255为完全不透明 例如：(255,0,0,255);
             - 使用convert_alpha()创建surface对象——`pygame.diplay.set_mode((300, 400)).convert_alpha()`
         - 方式二：pygame.Color()来创建一个Color对象    
-    - Rect对象
-        - 表示矩形(X,Y,Width,Height)
-    - 绘制图元        
+    - 绘制图元
+        - line对象
+            - 表示直线
+        - Rect对象
+            - 表示矩形(X,Y,Width,Height)
+    - Font对象
+        - Surf
+        - Rect
+        - Rect.topleft
+        - DISPLAYSURF.blit(Surf, Rect)         
+    - 随机
+        - random.choice()
+        - random.randint()    
         
                

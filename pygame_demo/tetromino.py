@@ -6,17 +6,20 @@
 import random, time, pygame, sys
 from pygame.locals import *
 
-FPS = 25
-WINDOWWIDTH = 640
-WINDOWHEIGHT = 480
-BOXSIZE = 20
-BOARDWIDTH = 10
-BOARDHEIGHT = 20
-BLANK = '.'
+# 常量
+FPS = 25 # 帧率
+WINDOWWIDTH = 640 # 宽
+WINDOWHEIGHT = 480 # 高
+BOXSIZE = 20 # 砖块尺寸
+BOARDWIDTH = 10 # 砖块的宽
+BOARDHEIGHT = 20 # 砖块的高
+BLANK = '.' # 黑背景块,空白空格值
 
+# 移动速度
 MOVESIDEWAYSFREQ = 0.15
 MOVEDOWNFREQ = 0.1
 
+# 间距
 XMARGIN = int((WINDOWWIDTH - BOARDWIDTH * BOXSIZE) / 2)
 TOPMARGIN = WINDOWHEIGHT - (BOARDHEIGHT * BOXSIZE) - 5
 
@@ -33,14 +36,15 @@ LIGHTBLUE   = ( 20,  20, 175)
 YELLOW      = (155, 155,   0)
 LIGHTYELLOW = (175, 175,  20)
 
-BORDERCOLOR = BLUE
-BGCOLOR = BLACK
-TEXTCOLOR = WHITE
-TEXTSHADOWCOLOR = GRAY
+BORDERCOLOR = BLUE # 界面颜色
+BGCOLOR = BLACK # 背景色
+TEXTCOLOR = WHITE # 文本颜色
+TEXTSHADOWCOLOR = GRAY # 文本阴影颜色
 COLORS      = (     BLUE,      GREEN,      RED,      YELLOW)
-LIGHTCOLORS = (LIGHTBLUE, LIGHTGREEN, LIGHTRED, LIGHTYELLOW)
+LIGHTCOLORS = (LIGHTBLUE, LIGHTGREEN, LIGHTRED, LIGHTYELLOW) # 高亮颜色
 assert len(COLORS) == len(LIGHTCOLORS) # each color must have light color
 
+# 模板的宽、高
 TEMPLATEWIDTH = 5
 TEMPLATEHEIGHT = 5
 
@@ -146,6 +150,7 @@ T_SHAPE_TEMPLATE = [['.....',
                      '..O..',
                      '.....']]
 
+# 砖块形状
 PIECES = {'S': S_SHAPE_TEMPLATE,
           'Z': Z_SHAPE_TEMPLATE,
           'J': J_SHAPE_TEMPLATE,
@@ -154,31 +159,39 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'O': O_SHAPE_TEMPLATE,
           'T': T_SHAPE_TEMPLATE}
 
-
+# 主函数
 def main():
+    # 定义全局变量
     global FPSCLOCK, DISPLAYSURF, BASICFONT, BIGFONT
+    # 初始化操作，窗口设置
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT))
     BASICFONT = pygame.font.Font('freesansbold.ttf', 18)
     BIGFONT = pygame.font.Font('freesansbold.ttf', 100)
     pygame.display.set_caption('Tetromino')
-
+    # 显示开始时文本信息
     showTextScreen('Tetromino')
+    # 主循环
     while True: # game loop
+        # 随机播放不同的音乐
         if random.randint(0, 1) == 0:
             pygame.mixer.music.load('tetrisb.mid')
         else:
             pygame.mixer.music.load('tetrisc.mid')
         pygame.mixer.music.play(-1, 0.0)
+        # 运行游戏
         runGame()
+        # 停止音乐
         pygame.mixer.music.stop()
+        # 显示结束时文本信息
         showTextScreen('Game Over')
 
 
 def runGame():
-    # setup variables for the start of the game
+    # 绘制界面
     board = getBlankBoard()
+    # 初始变量设置，时间，方向，分数
     lastMoveDownTime = time.time()
     lastMoveSidewaysTime = time.time()
     lastFallTime = time.time()
@@ -186,11 +199,14 @@ def runGame():
     movingLeft = False
     movingRight = False
     score = 0
+    # 设置砖块下落速度和时间
     level, fallFreq = calculateLevelAndFallFreq(score)
-
+    # 获取即将下落的组块
     fallingPiece = getNewPiece()
+    # 显示下一个即将生成的组块
     nextPiece = getNewPiece()
 
+    # 主循环
     while True: # game loop
         if fallingPiece == None:
             # No falling piece in play, so start a new piece at the top
@@ -201,6 +217,7 @@ def runGame():
             if not isValidPosition(board, fallingPiece):
                 return # can't fit a new piece on the board, so game over
 
+        # 事件响应
         checkForQuit()
         for event in pygame.event.get(): # event handling loop
             if event.type == KEYUP:
@@ -261,6 +278,7 @@ def runGame():
                             break
                     fallingPiece['y'] += i - 1
 
+        # 按键控制响应
         # handle moving the piece because of user input
         if (movingLeft or movingRight) and time.time() - lastMoveSidewaysTime > MOVESIDEWAYSFREQ:
             if movingLeft and isValidPosition(board, fallingPiece, adjX=-1):
@@ -287,6 +305,7 @@ def runGame():
                 fallingPiece['y'] += 1
                 lastFallTime = time.time()
 
+        # 绘制界面，状态，组块
         # drawing everything on the screen
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(board)
@@ -294,7 +313,7 @@ def runGame():
         drawNextPiece(nextPiece)
         if fallingPiece != None:
             drawPiece(fallingPiece)
-
+        # 更新界面，指定帧率
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
