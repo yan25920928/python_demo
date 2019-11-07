@@ -7,10 +7,10 @@ logging.basicConfig(level=logging.DEBUG)
 FPS = 10
 WINDOWWIDTH = 640
 WINDOWHEIGHT = 480
-BOXSIZE = 20 # 砖块尺寸
-BOARDWIDTH = 10 # 砖块的宽
-BOARDHEIGHT = 20 # 砖块的高
-BLANK = '.' # 黑背景块,空白空格值
+BOXSIZE = 20  # 砖块尺寸
+BOARDWIDTH = 10  # 砖块的宽
+BOARDHEIGHT = 20  # 砖块的高
+BLANK = '.'  # 黑背景块,空白空格值
 
 # 移动速度
 MOVESIDEWAYSFREQ = 0.15
@@ -21,25 +21,25 @@ XMARGIN = int((WINDOWWIDTH - BOARDWIDTH * BOXSIZE) / 2)
 TOPMARGIN = WINDOWHEIGHT - (BOARDHEIGHT * BOXSIZE) - 5
 
 #               R    G    B
-WHITE       = (255, 255, 255)
-GRAY        = (185, 185, 185)
-BLACK       = (  0,   0,   0)
-RED         = (155,   0,   0)
-LIGHTRED    = (175,  20,  20)
-GREEN       = (  0, 155,   0)
-LIGHTGREEN  = ( 20, 175,  20)
-BLUE        = (  0,   0, 155)
-LIGHTBLUE   = ( 20,  20, 175)
-YELLOW      = (155, 155,   0)
-LIGHTYELLOW = (175, 175,  20)
+WHITE = (255, 255, 255)
+GRAY = (185, 185, 185)
+BLACK = (0, 0, 0)
+RED = (155, 0, 0)
+LIGHTRED = (175, 20, 20)
+GREEN = (0, 155, 0)
+LIGHTGREEN = (20, 175, 20)
+BLUE = (0, 0, 155)
+LIGHTBLUE = (20, 20, 175)
+YELLOW = (155, 155, 0)
+LIGHTYELLOW = (175, 175, 20)
 
-BORDERCOLOR = BLUE # 界面颜色
-BGCOLOR = BLACK # 背景色
-TEXTCOLOR = WHITE # 文本颜色
-TEXTSHADOWCOLOR = GRAY # 文本阴影颜色
-COLORS      = (     BLUE,      GREEN,      RED,      YELLOW)
-LIGHTCOLORS = (LIGHTBLUE, LIGHTGREEN, LIGHTRED, LIGHTYELLOW) # 高亮颜色
-assert len(COLORS) == len(LIGHTCOLORS) # each color must have light color
+BORDERCOLOR = BLUE  # 界面颜色
+BGCOLOR = BLACK  # 背景色
+TEXTCOLOR = WHITE  # 文本颜色
+TEXTSHADOWCOLOR = GRAY  # 文本阴影颜色
+COLORS = (BLUE, GREEN, RED, YELLOW)
+LIGHTCOLORS = (LIGHTBLUE, LIGHTGREEN, LIGHTRED, LIGHTYELLOW)  # 高亮颜色
+assert len(COLORS) == len(LIGHTCOLORS)  # each color must have light color
 
 # 模板的宽、高
 TEMPLATEWIDTH = 5
@@ -155,13 +155,14 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'O': O_SHAPE_TEMPLATE,
           'T': T_SHAPE_TEMPLATE}
 
+
 def makeTextObjs(text, font, color):
     # 获取文本对象,和文本的尺寸
     surf = font.render(text, True, color)
     return surf, surf.get_rect()
 
-def showTextScreen(text):
 
+def showTextScreen(text):
     # 显示文本阴影信息
     titleSurf, titleRect = makeTextObjs(text, BIGFONT, TEXTSHADOWCOLOR)
     titleRect.center = (int(WINDOWWIDTH / 2), int(WINDOWHEIGHT / 2))
@@ -222,7 +223,8 @@ def drawBox(boxx, boxy, color, pixelx=None, pixely=None):
 def drawBoard(board):
     # 根据界面数据数据绘制图像
     # 绘制边界
-    pygame.draw.rect(DISPLAYSURF, BORDERCOLOR,(XMARGIN - 3, TOPMARGIN - 7, (BOARDWIDTH * BOXSIZE) + 8, (BOARDHEIGHT * BOXSIZE) + 8), 5)
+    pygame.draw.rect(DISPLAYSURF, BORDERCOLOR,
+                     (XMARGIN - 3, TOPMARGIN - 7, (BOARDWIDTH * BOXSIZE) + 8, (BOARDHEIGHT * BOXSIZE) + 8), 5)
     # 绘制背景
     pygame.draw.rect(DISPLAYSURF, BGCOLOR, (XMARGIN, TOPMARGIN, BOXSIZE * BOARDWIDTH, BOXSIZE * BOARDHEIGHT))
     for x in range(BOARDWIDTH):
@@ -277,13 +279,13 @@ def isValidPosition(board, piece, adjX=0, adjY=0):
     # 判断是否存在有效位置——是否结束砖块掉落
     for x in range(TEMPLATEWIDTH):
         for y in range(TEMPLATEHEIGHT):
-            isAboveBoard = y + piece['y'] + adjY < 0 # = 和 < 同时使用？
+            isAboveBoard = y + piece['y'] + adjY < 0  # = 和 < 同时使用？
             if isAboveBoard or PIECES[piece['shape']][piece['rotation']][y][x] == BLANK:
                 continue
             if not isOnBoard(x + piece['x'] + adjX, y + piece['y'] + adjY):
-                False
+                return False
             if board[x + piece['x'] + adjX][y + piece['y'] + adjY] != BLANK:
-                False
+                return False
     return True
 
 
@@ -295,12 +297,22 @@ def terminate():
 
 def checkForQuit():
     # 检测是否响应退出事件
-    for event in pygame.event.get(QUIT): # 窗口退出事件
+    for event in pygame.event.get(QUIT):  # 窗口退出事件
         terminate()
-    for event in pygame.event.get(KEYUP): # 响应KEYUP事件
+    for event in pygame.event.get(KEYUP):  # 响应KEYUP事件
         if event.key == K_ESCAPE:
             terminate()
-        pygame.event.post(event) # 继续传递其他的KEYUP事件
+        pygame.event.post(event)  # 继续传递其他的KEYUP事件
+
+
+def addToBoard(board, piece):
+    # 触底的砖块添加到界面
+    for x in range(TEMPLATEWIDTH):
+        for y in range(TEMPLATEHEIGHT):
+            if PIECES[piece['shape']][piece['rotation']][y][x] != BLANK:
+                board[x + piece['x']][y + piece['y']] = piece['color']
+    pass
+
 
 def runGame():
     # 获取界面数据
@@ -350,16 +362,70 @@ def runGame():
                     movingDown = False
             # 响应KeyDown：Left(a)，Right(d)，Down(s)
             elif event.type == KEYDOWN:
-                if event.key == K_LEFT:
-                    pass
+                # 左右移动的时候
+                if (event.key == K_LEFT or event.key == K_a) and isValidPosition(board, fallingPiece, adjX=-1):
+                    fallingPiece['x'] -= 1  # 位置左移一个
+                    movingLeft = True
+                    movingRight = False
+                    lastMoveSidewaysTime = time.time()
+                elif (event.key == K_RIGHT or event.key == K_d) and isValidPosition(board, fallingPiece, adjX=1):
+                    fallingPiece['x'] += 1  # 位置右移一个
+                    movingRight = True
+                    movingLeft = False
+                    lastMoveSidewaysTime = time.time()
+                # 变换逻辑
+                elif (event.key == K_UP or event.key == K_w):
+                    fallingPiece['rotation'] = (fallingPiece['rotation'] + 1) % len(PIECES[fallingPiece['shape']])
+                    if not isValidPosition(board, fallingPiece):  # TODO:存疑，为什么
+                        fallingPiece['rotation'] = (fallingPiece['rotation'] - 1) % len(PIECES[fallingPiece['shape']])
+                # 向下逻辑
+                elif (event.key == K_DOWN or event.key == K_s):
+                    movingDown = True
+                    if isValidPosition(board, fallingPiece, adjY=1):
+                        fallingPiece['y'] += 1  # 向下移动一个
+                    lastMoveDownTime = time.time()
+                # 空格速降逻辑
+                elif (event.key == K_SPACE):
+                    movingDown = False
+                    movingLeft = False
+                    movingLeft = False
+                    for i in range(1, BOARDHEIGHT):
+                        if not isValidPosition(board, fallingPiece, adjY=i):
+                            break
+                    fallingPiece['y'] += i - 1
+
                 pass
+            # 根据按键后的砖块状态进行处理
+            if (movingLeft or movingRight) and time.time() - lastMoveSidewaysTime > MOVESIDEWAYSFREQ:
+                if movingLeft and isValidPosition(board, fallingPiece, adjX=-1):
+                    fallingPiece['x'] -= 1
+                elif movingRight and isValidPosition(board, fallingPiece, adjX=1):
+                    fallingPiece['x'] += 1
+                lastMoveSidewaysTime = time.time()
+
+            if movingDown and time.time() - lastMoveDownTime > MOVEDOWNFREQ and isValidPosition(board, fallingPiece,
+                                                                                                adjY=1):
+                fallingPiece['y'] += 1
+                lastMoveDownTime = time.time()
+
+        # 按照时间自动下落的逻辑
+        if time.time() > lastFallTime > fallFred:
+            # 触底逻辑
+            if not isValidPosition(board, fallingPiece, adjY=1):
+                addToBoard(board, fallingPiece)
+                # score += removeCompleteLines(board) # 积分是否增加
+                level, fallFreq = calculateLevelAndFallFreq(score) # 根据分数匹配等级和下降速率
+                fallingPiece = None
+            else:
+                fallingPiece['y'] += 1
+                lastFallTime = time.time()
 
         # 画面更新
         DISPLAYSURF.fill(BGCOLOR)
-        drawBoard(board) # 绘制主界面
-        drawStatus(score, level) # 绘制状态
-        drawNextPiece(nextPiece) # 绘制下一个出现的砖块
-        if fallingPiece != None: # 如果即将掉落的砖块存在，则绘制出来
+        drawBoard(board)  # 绘制主界面
+        drawStatus(score, level)  # 绘制状态
+        drawNextPiece(nextPiece)  # 绘制下一个出现的砖块
+        if fallingPiece != None:  # 如果即将掉落的砖块存在，则绘制出来
             drawPiece(fallingPiece)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -395,6 +461,7 @@ def main():
         pygame.mixer.music.stop()
         # 显示结束时文本信息
         showTextScreen("Game Over")
+
 
 if __name__ == "__main__":
     main()
